@@ -1,1 +1,1 @@
-- 🌱 Projeto GreenTech
+🌱 Projeto GreenTech
