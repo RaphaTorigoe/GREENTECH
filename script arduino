@@ -1,0 +1,88 @@
+#include <LiquidCrystal.h>
+#include "DHT.h"
+#define DHTPIN A1 
+#define DHTTYPE DHT11
+#define pino_sinal_analogico A2
+ 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+DHT dht(DHTPIN, DHTTYPE); 
+
+int umidade;
+const int pinoValvula = 13;
+const int pinoCooler = 10;
+
+void setup()
+{
+  lcd.begin(16, 2);
+  Serial.begin(9600);
+  dht.begin();
+  pinMode(pino_sinal_analogico, INPUT);
+  pinMode(pinoValvula, OUTPUT);
+  pinMode(pinoCooler, OUTPUT);
+}
+ 
+void loop()
+{
+  lcd.scrollDisplayLeft(); 
+  delay(500);
+
+  lcd.setCursor(0, 1);
+  lcd.print("UMID SOLO:");
+
+  umidade = analogRead(pino_sinal_analogico);
+
+  lcd.setCursor(10,1);
+  lcd.print(umidade);
+
+  lcd.setCursor(12,1);
+  lcd.print(char(37));
+
+  lcd.setCursor(14, 1);
+  lcd.print("UMID AR:");
+
+  lcd.setCursor(24,1);
+  lcd.print(char(37));
+
+  lcd.setCursor(26,1);
+  lcd.print("Temp:");
+
+  int ha = dht.readHumidity();
+  int temp = dht.readTemperature();
+
+  lcd.setCursor(22,1);
+  lcd.print(ha);
+  
+  lcd.setCursor(31,1);
+  lcd.print(temp);
+
+  lcd.setCursor(33,1);
+  lcd.print(char(B11011111));
+
+  lcd.setCursor(34,1);
+  lcd.print("C");
+  umidade = umidade/8.12;
+
+
+  if(umidade<=60){
+  lcd.setCursor(0,0);
+  lcd.print("IRRIGACAO LIG");
+  digitalWrite(pinoValvula, HIGH);
+}  
+  
+  if(umidade>=70){
+  lcd.setCursor(0,0);
+  lcd.print("IRRIGACAO DES");
+  digitalWrite(pinoValvula, LOW);
+  }
+
+  if(temp>=28){
+  lcd.setCursor(15,0);
+  lcd.print("EXAUSTOR LIG");
+  digitalWrite(pinoCooler, HIGH);
+
+  }else if(temp<=27){
+  lcd.setCursor(15,0);
+  lcd.print("EXAUSTOR DES");
+  digitalWrite(pinoCooler, LOW);  
+  }
+}
