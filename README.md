@@ -1,6 +1,6 @@
 # 🌱 GreenTech 
 
-O Projeto **GreenTech** é um protótipo de **irrigação e monitoramento inteligente** que utiliza o sistema embarcado **Arduino** e a **linguagem de programação C++**, integrando **sensores**, **dispositivos de controle** e o **microcontroladores** para automatizar e otimizar o processo de irrigação em ambientes agrícola. 
+O Projeto **GreenTech** é um protótipo de **irrigação e monitoramento inteligente** que utiliza o sistema embarcado **Arduino** e a **linguagem de programação C++**, integrando **sensores**, **dispositivos de controle** e o **microcontroladores** para automatizar e otimizar o processo de irrigação em **ambientes agrícola**. 
 
 Os sensores são utilizados para monitorar variáveis ambientais importantes, como umidade do solo, umidade do ar, temperatura e níveis de luz solar. Esses dados são coletados e processados pelo Arduino, que toma decisões em tempo real com base nas condições detectadas e parâmetros definidos pelo usuário. 
 
