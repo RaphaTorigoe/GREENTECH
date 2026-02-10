@@ -1,25 +1,65 @@
-/* Projeto Curto Circuito – Módulo ESP01 - ESP8266 Modo AT */
+/*
+SKETCH: ESP-01_Master
+AUTOR: Raphael Kayky Hata Torigoe
+DATA: 16/08/24
+*/
 
-#include <SoftwareSerial.h>
-SoftwareSerial esp8266(10,11);  /* pino 2 TX , pino 3 RX */
-void setup(){
-Serial.begin(115200);         /* Opções para ajuste 9600, 19200, 57600 e */
-esp8266.begin(115200);        /* 115200 dBs */
+// Arquivo de configuração da rede
+#include "config.h"
+
+// Sensores
+AdafruitIO_Feed *umidadear = io.feed("umidadear");
+AdafruitIO_Feed *temperaturaar = io.feed("temperaturaar");
+AdafruitIO_Feed *umidadesolo = io.feed("umidadesolo");
+
+// Relés
+AdafruitIO_Feed *iluminacao = io.feed("iluminacao");
+AdafruitIO_Feed *ventoinha = io.feed("ventoinha");
+AdafruitIO_Feed *irrigacao = io.feed("irrigacao");
+
+void configuraMQTT();
+
+void setup() {
+  Serial.begin(9600);
+
+  configuraMQTT();
 }
-void loop(){
-if(esp8266.available())       /* Confere se a comunicação está acessível */
-{
-while(esp8266.available()) {  /* Enquanto estiver acessível */
-char c = esp8266.read();      /* Le o caractere. */
-Serial.write(c);              /* Escreve no monitor serial */
+
+void loop() {
+  io.run();
+
+  if (Serial.available() > 6) {
+    delay(15000);
+
+    String umidadeAr = Serial.readStringUntil('\n'); 
+    umidadear->save(umidadeAr);
+
+    String temperaturaAr = Serial.readStringUntil('\n');
+    temperaturaar->save(temperaturaAr);
+
+    String umidadeSolo = Serial.readStringUntil('\n');
+    umidadesolo->save(umidadeSolo);
+
+    String vldr = Serial.readStringUntil('\n');
+    iluminacao->save(vldr);
+
+    String vent = Serial.readStringUntil('\n');
+    ventoinha->save(vent);
+
+    String irrig = Serial.readStringUntil('\n');
+    irrigacao->save(irrig);
+  }
 }
-}
-if(Serial.available()){ 
-delay(1000); 
-String command="";
-while(Serial.available()) {   /* Le o comando */
-command+=(char)Serial.read();
-}
-esp8266.println(command);    /* Envia o comando para o ESP */
-}
+
+void configuraMQTT() {
+  Serial.print("Conectando ao Adafruit IO");
+  io.connect(); 
+
+  while (io.status() < AIO_CONNECTED) { 
+    Serial.print(".");
+    delay(500);
+  }
+
+  Serial.println();
+  Serial.println(io.statusText());
 }
