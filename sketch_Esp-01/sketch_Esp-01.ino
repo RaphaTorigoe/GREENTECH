@@ -4,7 +4,7 @@ AUTOR: Raphael Kayky Hata Torigoe
 DATA: 16/08/24
 */
 
-// Arquivo de configuração da rede
+// Arquivo de configuração da Adafruit IO e rede
 #include "config.h"
 
 // Sensores
