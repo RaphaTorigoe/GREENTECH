@@ -1,11 +1,14 @@
 /*
 SKETCH: GreenTech
 AUTOR: Raphael Kayky Hata Torigoe
-DATA: 04/07/24
+DATA: 16/08/24
 */
 
 
-//
+// Inclui o arquivo config
+#include "config.h"
+
+// Biblioteca I2C 
 #include <Wire.h> 
 
 // Biblioteca para o display LCD I2C
@@ -16,7 +19,7 @@ DATA: 04/07/24
 
 
 // Define o endereço do LCD
-#define endereco 0x27 
+#define enderecoLcd 0x27 
 
 // Define as colunas do LCD
 #define colunas 20 
@@ -46,8 +49,8 @@ DATA: 04/07/24
 #define miniBombaAgua 4 
 
 
-// 
-LiquidCrystal_I2C lcd(endereco, colunas, linhas);
+// Inicializa o LCD 
+LiquidCrystal_I2C lcd(enderecoLcd, colunas, linhas);
 
 // Inicializa o sensor DHT
 DHT dht (DHTPIN, DHTTYPE); 
@@ -69,7 +72,7 @@ int umidadeSolo;
 int umidadeSoloPercentual; 
 
 
-//
+// Byte vazio
 byte semStatus[8] = { 
   B00000,
   B00000,
@@ -81,7 +84,7 @@ byte semStatus[8] = {
   B00000
 };
 
-//
+// Byte de gota 
 byte statusGota[8] = { 
   B00000,
   B00100,
@@ -93,7 +96,7 @@ byte statusGota[8] = {
   B00000
 };
 
-//
+// Byte de ventilador
 byte statusVent[8] = { 
   B00000,
   B00000,
@@ -119,7 +122,7 @@ void setup() {
     // Limpa o display 
     lcd.clear(); 
 
-    //
+    // Cria os bytes
     lcd.createChar(0, semStatus); 
     lcd.createChar(1, statusGota);
     lcd.createChar(2, statusVent);
@@ -161,36 +164,36 @@ void loop() {
     umidadeSoloPercentual = map(umidadeSolo, 0, 1024, 100, 0); 
 
 
-    if (vldr == 1){ //
+    if (vldr == 1){ 
       digitalWrite(iluminacao, HIGH);
       lcd.setCursor(7, 3);
       lcd.print("LIG");
 
-    }else if (vldr == 0){ //
+    }else if (vldr == 0){ 
       digitalWrite(iluminacao, LOW);
       lcd.setCursor(7, 3);
       lcd.print("DES");
     }
 
 
-    if (temperaturaAr >= 35){ //
+    if (temperaturaAr >= 35){ 
       digitalWrite(ventoinha, HIGH);
       lcd.setCursor(19, 2);
       lcd.write(2);
 
-    }else if (temperaturaAr <= 25){ //
+    }else if (temperaturaAr <= 25){ 
       digitalWrite(ventoinha, LOW);
       lcd.setCursor(19, 2);
       lcd.write(0);
     }
 
 
-    if (umidadeSoloPercentual <= 60){ //
+    if (umidadeSoloPercentual <= 60){ 
       digitalWrite(miniBombaAgua, HIGH);
       lcd.setCursor(19, 0);
       lcd.write(1);
 
-    }else if (umidadeSoloPercentual >= 70){ //
+    }else if (umidadeSoloPercentual >= 70){ 
       digitalWrite(miniBombaAgua, LOW);
       lcd.setCursor(19, 0);
       lcd.write(0);
