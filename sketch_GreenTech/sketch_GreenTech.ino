@@ -1,5 +1,5 @@
 /*
-SKETCH: GreenTech
+SKETCH: GreenTech - Arduino Uno
 AUTOR: Raphael Kayky Hata Torigoe
 DATA: 16/08/24
 */
