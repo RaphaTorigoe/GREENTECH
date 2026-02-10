@@ -1,1 +1,9 @@
+#include "AdafruitIO_WiFi.h"
 
+#define IO_USERNAME "NOME DO USUÁRIO"
+#define IO_KEY "AIO KEY DA DASHBOARD"
+
+#define WIFI_SSID "NOME DA REDE"
+#define WIFI_PASS "SENHA DA REDE"
+
+AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
